@@ -4,49 +4,43 @@
  * - несколько из многих и Set
  */
 
-// const tagsContainer = document.querySelector('.js-tags');
-// let selectedTag = null;
-
-// tagsContainer.addEventListener('click', onTagsContainerClick);
-
-// function onTagsContainerClick(evt) {
-//   if (evt.target.nodeName !== 'BUTTON') {
-//     return;
-//   }
-
-//   const currentActiveBtn = document.querySelector('.tags__btn--active');
-
-//   if (currentActiveBtn) {
-//     currentActiveBtn.classList.remove('tags__btn--active');
-//   }
-
-//   const nextActiveBtn = evt.target;
-//   nextActiveBtn.classList.add('tags__btn--active');
-//   selectedTag = nextActiveBtn.dataset.value;
-
-//   console.log(selectedTag);
-// }
-
 const tagsContainer = document.querySelector('.js-tags');
-const selectedTags = new Set();
 
-tagsContainer.addEventListener('click', onTagsContainerClick);
+let selectedTags = new Set(); // Set has O(1) complexity, "constant time"
 
-function onTagsContainerClick(evt) {
-  if (evt.target.nodeName !== 'BUTTON') {
+function onFilterButtonClick(e) {
+  if (e.target.nodeName !== 'BUTTON') {
     return;
   }
-
-  const btn = evt.target;
-  const tag = btn.dataset.value;
-  const isActive = btn.classList.contains('tags__btn--active');
+  const btn = e.target;
+  const tagValue = btn.dataset.value
+  const isActive =  selectedTags.has(tagValue)
 
   if (isActive) {
-    selectedTags.delete(tag);
+    selectedTags.delete(tagValue);
   } else {
-    selectedTags.add(tag);
+    selectedTags.add(tagValue);
   }
-
-  btn.classList.toggle('tags__btn--active');
+  btn.classList.toggle('tags__btn--active')
   console.log(selectedTags);
 }
+
+tagsContainer.addEventListener('click', onFilterButtonClick);
+
+// const tagsContainer = document.querySelector('.js-tags');
+// let selectedTag = null;
+//
+// function onTagsContainerClick(e) {
+//   if (e.target.nodeName !== 'BUTTON') {
+//     return;
+//   }
+//   const currentlyActiveBtn = document.querySelector('.tags__btn--active');
+//
+//
+//   currentlyActiveBtn?.classList.remove('tags__btn--active');
+//   e.target.classList.add('tags__btn--active');
+//   selectedTag = e.target.dataset.value;
+// }
+//
+// tagsContainer.addEventListener('click', onTagsContainerClick);
+

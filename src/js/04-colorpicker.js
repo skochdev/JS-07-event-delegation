@@ -17,16 +17,14 @@ const colors = [
 const paletteContainer = document.querySelector('.js-palette');
 const cardsMarkup = createColorCardsMarkup(colors);
 
-paletteContainer.insertAdjacentHTML('beforeend', cardsMarkup);
-
-paletteContainer.addEventListener('click', onPaletteContainerClick);
+paletteContainer.insertAdjacentHTML('beforeend', cardsMarkup)
 
 function createColorCardsMarkup(colors) {
   return colors
     .map(({ hex, rgb }) => {
       return `
     <div class="color-card">
-     <div><div><div> <div
+     <div><div><div><div
      class="color-swatch"
      data-hex="${hex}"
      data-rgb="${rgb}"
@@ -42,33 +40,32 @@ function createColorCardsMarkup(colors) {
     .join('');
 }
 
-function onPaletteContainerClick(evt) {
-  const isColorSwatchEl = evt.target.classList.contains('color-swatch');
+function onCardClick(e) {
+  const isColorSwatchElement =  e.target.classList.contains('color-swatch')
 
-  if (!isColorSwatchEl) {
-    return;
+  if(!isColorSwatchElement) {
+    return
   }
 
-  const swatchEl = evt.target;
-  const parentColorCard = swatchEl.closest('.color-card');
+  const hexValue = e.target.dataset.hex
+  const swatchContainer = e.target.closest('.color-card')
 
-  removeActiveCardClass();
-  addActiveCardClass(parentColorCard);
-  setBodyBgColor(swatchEl.dataset.hex);
+  removeActiveClassIfPresent('.color-card.is-active')
+  setActiveClass(swatchContainer)
+  setBodyBGcolor(hexValue)
+
 }
 
-function setBodyBgColor(color) {
-  document.body.style.backgroundColor = color;
+function setBodyBGcolor(hex = '#fff') {
+  document.body.style.backgroundColor = hex
 }
 
-function removeActiveCardClass() {
-  const currentActiveCard = document.querySelector('.color-card.is-active');
-
-  if (currentActiveCard) {
-    currentActiveCard.classList.remove('is-active');
-  }
+function removeActiveClassIfPresent(className) {
+  const currentlyActiveSwatch = document.querySelector(className)
+  currentlyActiveSwatch?.classList.remove('is-active')
 }
 
-function addActiveCardClass(card) {
-  card.classList.add('is-active');
+function setActiveClass(element) {
+  element.classList.add('is-active')
 }
+paletteContainer.addEventListener('click', onCardClick)
